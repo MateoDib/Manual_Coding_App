@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it using the metadata below."
+title: "Manual Coding App: DAG-Compatible Topic Coding and Harmonization"
+authors:
+  - family-names: "Dib"
+    given-names: "Mateo"
+date-released: "2026-07-10"
+version: "0.1.0"
+license: "MIT"
+repository-code: "https://github.com/MateoDib/Manual_Coding_App"
+abstract: "Code and documentation for DAG-compatible manual topic coding and harmonization of qualitative interview material, distributed without the underlying sensitive participant data."
