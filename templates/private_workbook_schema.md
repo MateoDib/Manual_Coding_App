@@ -7,7 +7,7 @@ The applications expect a local Excel workbook. This workbook is not included in
 | Column | Manual coding app | Harmonization app | Description |
 |---|---:|---:|---|
 | `question` | Required | Required | Interview question or prompt. |
-| `response` | Required | Required | Participant response. Sensitive and not publishable. |
+| `response` | Required | Required | Participant response. |
 | `Topics_Coder_A` | Created if missing | Required | Coder A topic sequence. |
 | `Topics_Coder_B` | Created if missing | Required | Coder B topic sequence. |
 | `Topics_Coder_C` | Created if missing | Required | Coder C topic sequence. |
