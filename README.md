@@ -120,7 +120,6 @@ Do not commit:
 - coder workbooks;
 - agreement reports;
 - JSONL checkpoints;
-- LLM manifests;
 - database exports.
 
 Before publishing changes, run:
