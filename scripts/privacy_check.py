@@ -26,9 +26,7 @@ DENIED_EXTENSIONS = {
 DENIED_NAME_FRAGMENTS = {
     "topics_harmonization",
     "coding_agreement_report",
-    "llm_coding",
     "qa_handcoding_base",
-    "qa_llm_coding_base",
     "participant",
     "transcript",
     "interview",
