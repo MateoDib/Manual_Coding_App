@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Local application state
+.env
+.env.*
+backups*/
+outputs/
+exports/
+logs/
+
+# Sensitive data and derived study files
+data/
+datasets/
+private/
+*.csv
+*.tsv
+*.xls
+*.xlsx
+*.xlsm
+*.jsonl
+*.parquet
+*.feather
+*.sqlite
+*.db
+*.dta
+*.sav
+*.rds
+Topics_Harmonization.*
+coding_agreement_report.*
+llm_coding_*
+qa_handcoding_base*
+qa_llm_coding_base*
+topics_qa_llm_coding_base*
