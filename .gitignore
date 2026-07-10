@@ -20,6 +20,7 @@ exports/
 logs/
 
 # Sensitive data and derived study files
+private_workbooks/
 data/
 datasets/
 private/
@@ -36,6 +37,9 @@ private/
 *.dta
 *.sav
 *.rds
+coding_interview_base.*
+harmonization_interview_base.*
+harmonized_interview_base.*
 Topics_Harmonization.*
 coding_agreement_report.*
 llm_coding_*

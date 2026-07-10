@@ -1,411 +1,63 @@
 \documentclass[11pt,a4paper]{article}
 
-\usepackage[margin=1.55cm]{geometry}
+\usepackage[margin=1.8cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[french,english]{babel}
-\usepackage{pdflscape}
-\usepackage{array}
-\usepackage{longtable}
 \usepackage{booktabs}
-\usepackage[table]{xcolor}
-\usepackage{ragged2e}
-\usepackage{microtype}
-\usepackage{enumitem}
-\usepackage{caption}
-\usepackage{tcolorbox}
+\usepackage{array}
+\usepackage{xcolor}
 \usepackage{hyperref}
-\usepackage{pifont}
-\tcbuselibrary{skins,breakable}
 
 \definecolor{HeaderBlue}{HTML}{1F4E79}
-\definecolor{DarkBlue}{HTML}{173B5C}
-\definecolor{LightBlue}{HTML}{D9EAF7}
-\definecolor{VeryLightBlue}{HTML}{EEF6FC}
-\definecolor{LightGray}{HTML}{F5F5F5}
-\definecolor{CodeBack}{HTML}{F7F7F7}
-\definecolor{RuleGray}{HTML}{D8D8D8}
-\definecolor{SoftGreen}{HTML}{EAF5EA}
-\definecolor{SoftOrange}{HTML}{FFF3E0}
-\definecolor{SoftRed}{HTML}{FDECEC}
-
-\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
-\newcommand{\dagcode}[1]{\begingroup\ttfamily\scriptsize #1\endgroup}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcommand{\inlinecode}[1]{\texttt{#1}}
-\newcommand{\good}{\textcolor{HeaderBlue}{\ding{51}}}
-\newcommand{\warn}{\textcolor{orange!85!black}{\ding{115}}}
 
 \setlength{\parindent}{0pt}
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.18}
-\setlist[itemize]{leftmargin=1.4em, itemsep=0.15em, topsep=0.2em}
-\setlist[enumerate]{leftmargin=1.6em, itemsep=0.15em, topsep=0.2em}
-\captionsetup{labelfont=bf, font=small}
 \hypersetup{colorlinks=true, linkcolor=HeaderBlue, urlcolor=HeaderBlue}
 
 \begin{document}
 
-\selectlanguage{english}
-
 \begin{center}
-    {\Large\bfseries Harmonized Topic Aggregation}\[0.25em]
-    {\normalsize DAG-Compatible Manual Coding of Interview Material}\[0.25em]
-    {\small Working document for final coding discussion}
+{\Large\bfseries Manual Coding App for DAG-Compatible Qualitative Coding}\\[0.4em]
+{\normalsize Open-science protocol companion}\\[0.3em]
+{\small Associated paper: \emph{Using AI-led semi-structured interviews to explore the connection between Carbon Tax narratives and climate anxiety}}\\
+{\small Matéo Dib, Thibaut Arpinon, and Bérangère Legendre}
 \end{center}
 
-\vspace{0.3em}
+\section*{Purpose}
 
-\begin{tcolorbox}[
-    enhanced,
-    colback=VeryLightBlue,
-    colframe=HeaderBlue,
-    boxrule=0.6pt,
-    arc=2mm,
-    left=1.5mm,
-    right=1.5mm,
-    top=1.2mm,
-    bottom=1.2mm
-]
-\footnotesize
-\textbf{Purpose of the document.} This document summarizes the coding grammar used to harmonize independently coded interview material. The objective is not only to list topics, but to preserve the structure of each participant's reasoning through a compact DAG-compatible notation. The examples at the end illustrate how a participant's reasoning can become progressively more precise across successive question-response pairs.
-\end{tcolorbox}
+This document provides a printable summary of the coding grammar. It deliberately contains no participant responses, interview excerpts, row-level codings, or empirical database content.
 
-\section*{1. General principle}
+The applications support more than topic coding. They encode qualitative material as ordered, DAG-compatible topic sequences that preserve mechanisms, definitions, branches, trade-offs, priorities, source markers, and actor-specific scopes.
 
-The harmonized coding is treated as an \textbf{ordered sequence of tokens}. A token can be a substantive topic, an operator, a required ending node, a source marker, a scope-qualified topic, or an aggregated topic with subtopics. The purpose is to make the final coding usable for the reconstruction of causal chains, definitional links, trade-offs, priority relations, coexistence relations, and distinct narrative paths.
-
-\begin{tcolorbox}[
-    enhanced,
-    breakable,
-    colback=CodeBack,
-    colframe=RuleGray,
-    boxrule=0.4pt,
-    arc=1mm,
-    left=1.5mm,
-    right=1.5mm,
-    top=1mm,
-    bottom=1mm
-]
-\footnotesize
-\textbf{Core idea.} A coding such as
-\begin{center}
-\dagcode{carbon\_tax --> fuel\_price\_increase --> inflation --> unacceptability}
-\end{center}
-should be read as a compact representation of a participant's reasoning: the carbon tax is associated with higher fuel prices, this is associated with inflation, and this leads to unacceptability.
-\end{tcolorbox}
-
-\subsection*{Token types}
+\section*{Core Operators}
 
 \begin{center}
-\footnotesize
-\begin{tabular}{L{0.22\linewidth} L{0.35\linewidth} L{0.34\linewidth}}
+\begin{tabular}{L{0.18\linewidth} L{0.74\linewidth}}
 \toprule
-\rowcolor{HeaderBlue}
-\color{white}\textbf{Token type} & \color{white}\textbf{Example} & \color{white}\textbf{Meaning} \\
+\textbf{Operator} & \textbf{Interpretation} \\
 \midrule
-Substantive topic & \inlinecode{carbon\_tax}, \inlinecode{fuel\_price\_increase} & A conceptual node in the participant's reasoning. \\
-DAG operator & \inlinecode{-->}, \inlinecode{=}, \inlinecode{+}, \inlinecode{\&}, \inlinecode{<}, \inlinecode{>}, \inlinecode{;} & A formal relation between topics or narrative paths. \\
-Required ending node & \inlinecode{acceptability}, \inlinecode{unacceptability}, \inlinecode{ambivalent\_acceptability} & A frequent final node in the Acceptability and Final phases. \\
-Aggregated topic & \inlinecode{green\_transport\_development (electric\_vehicle\_infrastructure, soft\_mobility)} & A broad topic with more specific subtopics. \\
-Source marker & \inlinecode{| newspaper}, \inlinecode{| ipcc\_reports} & The source of information mentioned by the participant. \\
-Scope-qualified topic & \inlinecode{fuel\_price\_increase[others]}, \inlinecode{no\_current\_car\_dependency[self]} & Indicates to whom or to which group the topic applies. \\
-Composite scope qualifier & \inlinecode{unreadiness[modest\_household, company (agricultural\_sector, sme)]} & Indicates that a topic applies to several groups, including subgroups nested under a broader actor. \\
+\inlinecode{-->} & Positive causal or consequential link. \\
+\inlinecode{=} & Definition, equivalence, or framing. \\
+\inlinecode{;} & Distinct narrative path in the same response. \\
+\inlinecode{+} & Additive package or bundle. \\
+\inlinecode{\&} & Coexistence without additive meaning. \\
+\inlinecode{<} / \inlinecode{>} & Priority or dominance relation. \\
+\inlinecode{|} & Information source marker, for example \inlinecode{A --> B | newspaper}. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Substantive topic labels are normalized to lowercase and multi-word concepts are written with underscores, for example \inlinecode{future\_environmental\_benefits}, \inlinecode{purchasing\_power\_loss}, or \inlinecode{economic\_environmental\_trade\_off}.
-
-\section*{2. Coding grammar}
-
-\begin{tcolorbox}[
-    enhanced,
-    colback=VeryLightBlue,
-    colframe=HeaderBlue,
-    boxrule=0.5pt,
-    arc=2mm,
-    left=1.5mm,
-    right=1.5mm,
-    top=1mm,
-    bottom=1mm
-]
-\footnotesize
-\textbf{Summary of the notation.}
-\inlinecode{A --> B} denotes a positive causal or consequential link;
-\inlinecode{A = B} denotes a participant's definition or equivalence;
-\inlinecode{A + B} denotes an additive combination;
-\inlinecode{A \& B} denotes coexistence without addition;
-\inlinecode{A < B} means that \inlinecode{B} takes priority over \inlinecode{A};
-\inlinecode{A > B} means that \inlinecode{A} takes priority over \inlinecode{B};
-\inlinecode{A (X, Y)} denotes subtopics aggregated under \inlinecode{A};
-\inlinecode{A[others]} qualifies the topic by actor or scope;
-\inlinecode{| newspaper} records an information source;
-\inlinecode{;} separates distinct narrative paths.
-\end{tcolorbox}
-
-\subsection*{Operators and their interpretation}
-
-\begin{center}
-\footnotesize
-\begin{tabular}{L{0.10\linewidth} L{0.27\linewidth} L{0.55\linewidth}}
-\toprule
-\rowcolor{HeaderBlue}
-\color{white}\textbf{Symbol} & \color{white}\textbf{Name} & \color{white}\textbf{Interpretation} \\
-\midrule
-\inlinecode{-->} & Positive causal link & \inlinecode{A --> B} means that \inlinecode{A} leads to \inlinecode{B} in the participant's reasoning. \\
-\inlinecode{=} & Definition or equivalence & \inlinecode{A = B} means that the participant defines, frames, or understands \inlinecode{A} as \inlinecode{B}. \\
-\inlinecode{;} & Distinct narrative path & Separates two distinct lines of reasoning within the same question-response pair. \\
-\inlinecode{+} & Additive combination & \inlinecode{A + B} means that \inlinecode{A} and \inlinecode{B} form a combined package or bundle. \\
-\inlinecode{\&} & Coexistence & \inlinecode{A \& B} means that \inlinecode{A} and \inlinecode{B} coexist without being additive components. \\
-\inlinecode{<} & Priority / dominance & \inlinecode{A < B} means that \inlinecode{B} prevails over \inlinecode{A}. \\
-\inlinecode{>} & Priority / dominance & \inlinecode{A > B} means that \inlinecode{A} prevails over \inlinecode{B}. \\
-\inlinecode{|} & Information source marker & \inlinecode{A --> B | newspaper} means that the path is linked to information received through a newspaper. \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\section*{3. Directional topic labels}
-
-Because the arrow \inlinecode{-->} always represents a positive causal or logical relation, the \textbf{direction of change must be encoded in the topic label itself}. The grammar does not use negative arrows. Therefore, coders should avoid neutral labels when the response refers to an increase, decrease, deterioration, improvement, or change in magnitude.
-
-\begin{center}
-\footnotesize
-\begin{tabular}{L{0.42\linewidth} L{0.42\linewidth}}
-\toprule
-\rowcolor{HeaderBlue}
-\color{white}\textbf{Prefer} & \color{white}\textbf{Avoid when direction matters} \\
-\midrule
-\inlinecode{fuel\_price\_increase} & \inlinecode{fuel\_price} \\
-\inlinecode{fuel\_price\_decrease} & \inlinecode{fuel\_price} \\
-\inlinecode{inflation} & \inlinecode{price\_level} \\
-\inlinecode{deflation} & \inlinecode{price\_level} \\
-\inlinecode{purchasing\_power\_loss} & \inlinecode{purchasing\_power} \\
-\inlinecode{carbon\_emission\_reduction} & \inlinecode{carbon\_emissions} \\
-\inlinecode{carbon\_emission\_increase} & \inlinecode{carbon\_emissions} \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-For example, \dagcode{carbon\_tax --> fuel\_price\_increase --> unacceptability} and \dagcode{carbon\_tax --> fuel\_price\_decrease --> acceptability} both use positive arrows, but they encode substantively different mechanisms because the direction of variation is included in the node label.
-
-\section*{4. Cumulative DAG refinement across question-response pairs}
-
-The coding should not always treat each question-response pair as fully independent. When a question explicitly follows up on a previous answer, and when the participant elaborates, qualifies, corrects, or deepens a previous line of reasoning, the coder should, whenever possible and analytically appropriate, reuse the previous relevant DAG as a backbone and refine it with the new information.
-
-This cumulative principle is central to the interview design. A simple DAG can become more detailed across successive question-response pairs, especially within the same phase. The stable parts of the previous DAG should be preserved, while newly introduced mechanisms, subtopics, definitions, qualifications, source markers, scope qualifiers, or ending nodes should be added.
-
-\begin{tcolorbox}[
-    enhanced,
-    breakable,
-    colback=SoftOrange,
-    colframe=orange!70!black,
-    boxrule=0.45pt,
-    arc=1.5mm,
-    left=1.5mm,
-    right=1.5mm,
-    top=1mm,
-    bottom=1mm
-]
-\footnotesize
-\textbf{Practical rule.} Before finalizing a row, ask whether the current answer is: (i) independent; (ii) a follow-up that refines the previous DAG; (iii) a correction of a previous DAG; (iv) a new narrative path to add after \inlinecode{;}; or (v) a non-substantive continuation to code as \inlinecode{none}.
-\end{tcolorbox}
-
-\subsection*{Illustration of cumulative refinement}
-
-\footnotesize
-\begin{tabular}{L{0.15\linewidth} L{0.76\linewidth}}
-\toprule
-\rowcolor{HeaderBlue}
-\color{white}\textbf{Step} & \color{white}\textbf{Coding} \\
-\midrule
-Initial representation & \dagcode{carbon\_tax = carbon\_credit\_market --> financial\_incentives --> carbon\_emission\_reduction; carbon\_tax = carbon\_credit\_market --> secondary\_market\_distorsion} \\
-Refinement & \dagcode{carbon\_tax = carbon\_credit\_market --> secondary\_market\_distorsion (polluting\_rights, heat\_pump) --> discredity} \\
-Further specification & \dagcode{carbon\_tax = carbon\_credit\_market --> financial\_incentives = carbon\_offset --> carbon\_emission\_reduction; carbon\_tax = carbon\_credit\_market --> secondary\_market\_distorsion (polluting\_rights, heat\_pump) = carbon\_tax\_circumvention --> inefficiency --> unacceptability} \\
-\bottomrule
-\end{tabular}
-\normalsize
-
-\section*{5. Phase-specific coding rules}
-
-\subsection*{Top-of-Mind Phase}
-
-In the Top-of-Mind Phase, there is no required ending node. The purpose is to capture the participant's spontaneous representation, association, definition, or source of information. Whenever possible, the coding should begin with \inlinecode{carbon\_tax = ...}, because the participant is usually explaining what the carbon tax means, evokes, or represents to them.
-
-\begin{tcolorbox}[enhanced, colback=CodeBack, colframe=RuleGray, boxrule=0.4pt, arc=1mm]
-\footnotesize
-\textbf{Example.}\quad \dagcode{carbon\_tax = carbon\_credit\_market --> secondary\_market\_distorsion (heat\_pump, polluting\_rights) --> discredity | newspaper}
-\end{tcolorbox}
-
-\subsection*{Acceptability Phase}
-
-In the Acceptability Phase, the final node should be, whenever possible, \inlinecode{acceptability}, \inlinecode{unacceptability}, or \inlinecode{ambivalent\_acceptability}. When the participant proposes a complementary or alternative policy, the branch should be introduced with \inlinecode{alternative\_policy = ...}. This convention distinguishes the evaluation of the carbon tax itself from the evaluation of a modified or preferred policy package.
-
-\begin{tcolorbox}[enhanced, colback=CodeBack, colframe=RuleGray, boxrule=0.4pt, arc=1mm]
-\footnotesize
-\textbf{Example.}\quad \dagcode{carbon\_tax --> fuel\_price\_increase --> inflation \& unreadiness --> recession --> unacceptability; alternative\_policy = carbon\_tax + green\_transport\_development (electric\_vehicle\_infrastructure, soft\_mobility) + green\_energy\_development (renewable\_energy, nuclear\_energy) --> deflation --> acceptability}
-\end{tcolorbox}
-
-\subsection*{Climate Anxiety Phase}
-
-In the Climate Anxiety Phase, the final node should be the participant's emotion whenever the response allows it. The coding should preserve the chain leading to that emotion.
-
-\begin{tcolorbox}[enhanced, colback=CodeBack, colframe=RuleGray, boxrule=0.4pt, arc=1mm]
-\footnotesize
-\textbf{Example.}\quad \dagcode{intensive\_agriculture --> ecological\_degradation (soil\_depletion, biodiversity\_loss) --> agricultural\_vulnerability (unpredictable\_climate, water\_scaracity, unadapted\_crops) --> food\_unsustainability --> worry (food\_supply, water\_scarcity)}
-\end{tcolorbox}
-
-\subsection*{Final Phase}
-
-In the Final Phase, the final node should again be \inlinecode{acceptability}, \inlinecode{unacceptability}, or \inlinecode{ambivalent\_acceptability}, whenever possible. The coding should synthesize the participant's final position while preserving the mechanisms that explain it.
-
-\begin{tcolorbox}[enhanced, colback=CodeBack, colframe=RuleGray, boxrule=0.4pt, arc=1mm]
-\footnotesize
-\textbf{Example.}\quad \dagcode{carbon\_tax --> fuel\_price\_increase --> economic\_environmental\_trade\_off = future\_environmental\_benefits < immediate\_recession --> unacceptability}
-\end{tcolorbox}
-
-\section*{6. Subtopics, information sources, and scope qualifiers}
-
-\subsection*{Aggregated topics: parentheses}
-
-Parentheses are used when a broad topic aggregates more specific subtopics. For example, \inlinecode{green\_transport\_development (electric\_vehicle\_infrastructure, soft\_mobility)} means that \inlinecode{electric\_vehicle\_infrastructure} and \inlinecode{soft\_mobility} are coded as subtopics of \inlinecode{green\_transport\_development}.
-
-\subsection*{Information sources: vertical bar}
-
-The symbol \inlinecode{|} records where the participant says the information came from. It is often useful in the Top-of-Mind Phase. Recommended labels include \inlinecode{newspaper}, \inlinecode{television}, \inlinecode{social\_media}, \inlinecode{professional\_experience}, \inlinecode{personal\_experience}, \inlinecode{family}, \inlinecode{friends}, \inlinecode{public\_authority}, \inlinecode{scientific\_report}, and \inlinecode{ipcc\_reports}.
-
-
-\subsection*{Scope qualifiers: square brackets}
-
-Square brackets qualify a substantive topic by indicating the actor, group, social position, or point of view to which the topic applies. The qualifier is attached directly to the topic without a space. This convention is useful when the participant distinguishes between the self, other people, households, firms, or more specific affected groups.
-
-Simple scope qualifiers take the form:
-
-\begin{center}
-\dagcode{fuel\_price\_increase[others]}\qquad
-\dagcode{no\_current\_car\_dependency[self]}\qquad
-\dagcode{potential\_direct\_impact[future\_self]}
-\end{center}
-
-Scope qualifiers may also be \textbf{composite}. This means that the same topic applies to several actors or groups. Commas separate the groups inside square brackets:
-
-\begin{center}
-\dagcode{unreadiness[modest\_household, company]}
-\end{center}
-
-A group inside square brackets may itself be specified with parentheses when it contains subgroups. For example:
-
-\begin{center}
-\dagcode{unreadiness[modest\_household, company (agricultural\_sector, sme)]}
-\end{center}
-
-This should be read as: modest households are not ready, and firms---more specifically firms in the agricultural sector and SMEs---are also not ready. In this notation, square brackets answer the question \emph{``who is concerned by this node?''}, while parentheses inside the brackets specify subgroups of a broader actor category.
-
-\begin{tcolorbox}[enhanced, colback=SoftGreen, colframe=green!45!black, boxrule=0.45pt, arc=1.5mm]
-\footnotesize
-\textbf{Example with a composite scope qualifier.}
-\dagcode{carbon\_tax --> fuel\_price\_increase --> inflation \& unreadiness[modest\_household, company (agricultural\_sector, sme)] --> consumption\_decrease --> recession --> unacceptability --> strong\_social\_contest}
-\end{tcolorbox}
-
-Avoid writing the qualifier as a separate token, for example \inlinecode{unreadiness [modest\_household]}. It should be attached to the topic as \inlinecode{unreadiness[modest\_household]}.
-
-Recommended scope labels include \inlinecode{self}, \inlinecode{future\_self}, \inlinecode{others}, \inlinecode{households}, \inlinecode{firms}, \inlinecode{modest\_household}, \inlinecode{low\_income\_households}, \inlinecode{rural\_households}, \inlinecode{urban\_households}, \inlinecode{car\_dependent\_people}, \inlinecode{company}, \inlinecode{sme}, \inlinecode{agricultural\_sector}, and \inlinecode{public\_authorities}. Use the most precise label that is analytically useful, but avoid excessive proliferation of group labels.
-
-\section*{7. Recommended coding workflow}
+\section*{Private Workbook Flow}
 
 \begin{enumerate}
-    \item Read the question and the response.
-    \item Identify the interview phase: Top-of-Mind, Acceptability, Climate Anxiety, or Final Phase.
-    \item Check whether the current answer is independent or whether it refines a previous answer.
-    \item If it is a follow-up, reuse the relevant previous DAG as a backbone and add only what the new answer contributes.
-    \item Compare the three individual codings and choose whether to use one as a starting point.
-    \item Add topics, operators, required ending nodes, subtopics, source markers, simple scope qualifiers, and composite scope qualifiers as needed.
-    \item Use \inlinecode{carbon\_tax = ...} in the Top-of-Mind Phase whenever the response allows it.
-    \item Use \inlinecode{alternative\_policy = ...} when the participant proposes a complementary or alternative policy.
-    \item Encode the direction of variation in node labels, such as \inlinecode{fuel\_price\_increase}, \inlinecode{deflation}, or \inlinecode{purchasing\_power\_loss}.
-    \item End Acceptability and Final Phase codings with \inlinecode{acceptability}, \inlinecode{unacceptability}, or \inlinecode{ambivalent\_acceptability} whenever possible.
-    \item Use \inlinecode{none} only when the participant explicitly adds no substantive information.
+\item Manual coding uses \inlinecode{coding\_interview\_base.xlsx}.
+\item After all coders have added their columns, copy it to \inlinecode{harmonization\_interview\_base.xlsx}.
+\item Harmonization writes the final base to \inlinecode{harmonized\_interview\_base.xlsx}.
 \end{enumerate}
 
-\section*{8. Soft validation and consistency}
+\section*{Citation}
 
-The coding app performs soft validation. It does not block saving, because qualitative coding requires flexibility, but it warns when a sequence appears syntactically unusual. Coders should check sequences that start with an operator, end with an unfinished operator, contain consecutive operators, include unbalanced parentheses, use a source marker without a source, or write a scope qualifier as a separate token.
-
-For comparability, stable labels should be used whenever possible. Prefer \inlinecode{fuel\_price\_increase}, \inlinecode{ambivalent\_acceptability}, \inlinecode{newspaper}, and \inlinecode{brutal\_burden[others]} rather than alternating variants such as \inlinecode{fuel\_costs}, \inlinecode{mixed\_acceptability}, \inlinecode{press\_article}, or \inlinecode{bad\_for\_people}.
-
-\newpage
-
-\section*{9. Example of harmonized coding across one interview}
-
-The table below illustrates how the coding grammar can be applied to one interview. It also shows the cumulative refinement logic: the first rows establish broad representations, while later rows specify mechanisms, affected groups, emotional endpoints, and final acceptability judgments.
-
-\begin{landscape}
-\footnotesize
-
-\rowcolors{2}{LightGray}{white}
-
-\begin{longtable}{L{0.035\linewidth} L{0.255\linewidth} L{0.305\linewidth} L{0.355\linewidth}}
-
-\caption{Example of one interview coding}\\
-
-\toprule
-\rowcolor{HeaderBlue}
-\color{white}\textbf{Row} &
-\color{white}\textbf{Question excerpt} &
-\color{white}\textbf{Response excerpt} &
-\color{white}\textbf{Harmonized aggregation / DAG-compatible coding} \\
-\midrule
-\endfirsthead
-
-\toprule
-\rowcolor{HeaderBlue}
-\color{white}\textbf{Row} &
-\color{white}\textbf{Question excerpt} &
-\color{white}\textbf{Response excerpt} &
-\color{white}\textbf{Harmonized aggregation / DAG-compatible coding} \\
-\midrule
-\endhead
-
-\midrule
-\multicolumn{4}{r}{\emph{Continued on next page}}\\
-\endfoot
-
-\bottomrule
-\endlastfoot
-
-1 & Bonjour, je suis un assistant IA chargé de conduire cet entretien. Merci beaucoup de prendre le temps de participer. Vos réponses sont essentielles pour notre étude. Il nous serait très précieux que vos réponses soient […] & Ce qui me vient quand je pense à la taxe carbone, c'est que c'est un dispositif pour inciter les entreprises à réduire leurs émissions de carbone, mais il me semble que ça génère aussi des dérives sur leur revente sur des marchés secondaires. & \dagcode{carbon\_tax = carbon\_credit\_market --> financial\_incentives --> carbon\_emission\_reduction; carbon\_tax = carbon\_credit\_market --> secondary\_market\_distorsion} \\
-\addlinespace[0.25em]
-2 & Vous associez donc la taxe carbone à un mécanisme qui pousse les entreprises à réduire leurs émissions, tout en pouvant entraîner des dérives liées à la revente sur des marchés secondaires. **Quand vous parlez de […] & Je pense à des crédits carbone qui peuvent être revendus ou à des dispositifs comme les installations de pompes à chaleur chez des particuliers et autres qui peuvent être reliés à des droits à polluer de certaines entreprises. Pour moi, ça décrédibilise ce dispositif. & \dagcode{carbon\_tax = carbon\_credit\_market --> secondary\_market\_distorsion (polluting\_rights, heat\_pump) --> discredity} \\
-\addlinespace[0.25em]
-3 & Vous évoquez donc un système où des actions comme l’installation de pompes à chaleur chez des particuliers peuvent, selon vous, être reliées à des droits à polluer pour des entreprises, et c’est cela qui décrédibilise […] & Mais à la base, la taxe carbone est censée faire payer les émissions de carbone des entreprises, mais en pratique, elles changent peu leur manière de faire et trouvent plutôt d'autres manières de contourner la taxe carbone. & \dagcode{carbon\_tax = carbon\_credit\_market --> financial\_incentives = carbon\_offset --> carbon\_emission\_reduction; carbon\_tax = carbon\_credit\_market --> secondary\_market\_distorsion (polluting\_rights, heat\_pump) = carbon\_tax\_circumvention --> inefficiency --> unacceptability} \\
-\addlinespace[0.25em]
-4 & Merci pour vos réponses ! Est-ce que vous avez quelque chose à ajouter à ce sujet ou en lien avec ce dont nous avons discuté jusqu'à présent ? & non & \dagcode{none} \\
-\addlinespace[0.25em]
-5 & J'ai bien compris votre point de vue et je vous remercie pour vos réponses précédentes ! **Le saviez-vous ?** La Taxe Carbone est toujours en place mais sa trajectoire d'augmentation progressive a été stoppée à […] & Moi je pense qu'aujourd'hui si on suivait la trajectoire pour 2030 avec notamment une augmentation du prix du gazole plus enfin de l'essence de plus de 4 euros par litre, aujourd'hui le pays, les entreprises et les particuliers ne sont pas du tout prêts à absorber ça, notamment dans la hausse du coût de transport des biens, des marchandises et des personnes. Donc quelque part la trajectoire n'est pas accompagnée par du développement d'infrastructures pour les véhicules électriques, pour d'autres types de mobilité et pour réduire le coût de l'énergie par d'autres biais avec la mise en place de davantage d'énergies renouvelables ou nucléaires. Aujourd'hui, je pense que de suivre cette trajectoire au rythme initialement prévu, ce serait un gros risque sur l'économie et que le pays n'est pas prêt à en accepter les conséquences. & \dagcode{carbon\_tax --> fuel\_price\_increase --> inflation \& unreadiness --> recession --> unacceptability; alternative\_policy = carbon\_tax + green\_transport\_development (electric\_vehicle\_infrastructure, soft\_mobility) + green\_energy\_development (renewable\_energy, nuclear\_energy) --> deflation --> acceptability} \\
-\addlinespace[0.25em]
-6 & Vous dites que reprendre la trajectoire initiale ferait peser un gros risque sur l’économie, et que le pays n’est pas prêt à en accepter les conséquences. **Quelles seraient, pour vous, les conséquences les plus importantes […] & L'augmentation des prix du gazole et de l'essence se répercuterait sur quasiment toutes les marchandises et matières premières, toutes les livraisons, toutes les chaînes logistiques et tous les revenus des Français qui ne sont pas suffisants aujourd'hui pour gérer cette augmentation du coût du carburant, ne serait-ce que pour aller au travail ou pour se payer les biens et services dont les prix augmenteraient très fortement en face de l'augmentation des prix du gazole et de l'essence. & \dagcode{carbon\_tax --> fuel\_price\_increase --> inflation --> modest\_household\_burden --> consumption\_decrease --> unacceptability; carbon\_tax --> fuel\_price\_increase --> commuting\_cost\_increase --> modest\_household\_burden --> job\_mobility\_decrease --> unacceptability} \\
-\addlinespace[0.25em]
-7 & Vous dites que la hausse du carburant toucherait à la fois le prix des biens du quotidien et la possibilité même, pour certains, d’aller travailler avec des revenus déjà trop serrés. **Quand vous pensez à […] & Bah déjà aujourd'hui avec les augmentations du gazole, un gazole à 2 euros et plus, ça fait qu'il y a un certain nombre de personnes qui se demandent si elles vont continuer à aller au travail parce que ça ça augmente de 25\% le coût de leur plein d'essence. On voit que l'État a mis en place des aides pour les artisans et les PME qui ont énormément de transport avec des utilitaires ou des camions, même pour les agriculteurs qui ont un coût du fuel important. Donc aujourd'hui dans les arbitrages de dépenses, ça fait que le transport et le le coût du transport occuperaient une part très très importante du budget des personnes et des entreprises et aussi qu'il y aurait une baisse sensible du pouvoir d'achat de tout le monde parce que les biens et marchandises et aussi certains services seraient extrêmement chers en comparaison avec ce qu'ils sont aujourd'hui. Et euh donc face à cette perte de pouvoir d'achat, les gens dépenseraient moins, gagneraient moins et Et on aurait aussi de la perte de mobilité donc avec des une majorité de personnes qui essaieraient de trouver des emplois beaucoup plus près de chez elles, donc globalement un ralentissement fort de l'économie, voire une récession. Et enfin, ça s'accompagnerait sans doute par une énorme contestation populaire comme pendant les gilets jaunes, voire beaucoup plus. & \dagcode{carbon\_tax --> fuel\_price\_increase --> inflation --> modest\_household\_burden \& company\_burden (agricultural\_sector, sme) --> consumption\_decrease --> recession --> unacceptability --> strong\_social\_contest; carbon\_tax --> fuel\_price\_increase --> commuting\_cost\_increase --> modest\_household\_burden --> job\_mobility\_decrease --> recession --> unacceptability --> strong\_social\_contest} \\
-\addlinespace[0.25em]
-8 & Merci pour vos réponses ! Est-ce que vous avez quelque chose à ajouter à ce sujet ou en lien avec ce dont nous avons discuté jusqu'à présent ? & non & \dagcode{none} \\
-\addlinespace[0.25em]
-9 & Merci beaucoup pour vos réponses, j'ai bien compris votre perception. Maintenant, j'aimerais mieux comprendre votre point de vue sur les modifications environnementales. **Pourriez-vous me dire ce que vous ressentez quand vous entendez parler ou que […] & Moi, je pense en lien avec les derniers rapports du GIEC que les activités humaines induisent beaucoup de modifications de l'environnement négatives, donc dérèglement climatique, des conséquences négatives pour la biodiversité, de la déforestation, de l'appauvrissement des sols, et ainsi de suite. Donc euh je pense que les activités humaines induisent des changements négatifs sur l'environnement et le climat. & 
-\dagcode{human\_activities --> ecological\_degradation (biodiversity\_damage, deforestation, soil\_depletion) \& climate\_change | ipcc\_reports} \\
-\addlinespace[0.25em]
-10 & Vous dites que, d’après les rapports du GIEC, les activités humaines entraînent plusieurs modifications négatives de l’environnement, comme le dérèglement climatique, l’atteinte à la biodiversité, la déforestation et l’appauvrissement des sols. **Parmi ces différents aspects, […] & Pour moi, c'est notamment l'appauvrissement des sols avec une agriculture qui est devenue beaucoup plus intensive qu'avant euh et qui euh qui génère la perte de biodiversité, des questionnements sur la soutenabilité alimentaire, euh sur euh la résilience qu'on pourrait avoir euh par rapport à au dérèglement climatique avec un climat plus imprévisible, euh des cultures et des grandes cultures qui sont de moins en moins adaptées à ces climats et euh une raréfaction des ressources en eau également. & \dagcode{intensive\_agriculture --> ecological\_degradation (soil\_depletion, biodiversity\_loss) --> agricultural\_vulnerability (unpredictable\_climate, water\_scaracity, unadapted\_crops) --> food\_unsustainability} \\
-\addlinespace[0.25em]
-11 & Vous associez l’appauvrissement des sols à une agriculture plus intensive, qui entraîne selon vous une perte de biodiversité, des difficultés pour les cultures, des interrogations sur l’alimentation et une raréfaction de l’eau. **Parmi ces différents […] & Pour moi, ce qui pèse le plus dans mes inquiétudes, c'est euh les interrogations sur l'alimentation et l'eau. euh Comment est-ce qu'on va faire face dans les décennies à venir à ces changements-là et est-ce que les territoires vont être encore en mesure de se nourrir ? & \dagcode{intensive\_agriculture --> ecological\_degradation (soil\_depletion, biodiversity\_loss) --> agricultural\_vulnerability (unpredictable\_climate, water\_scaracity, unadapted\_crops) --> food\_unsustainability --> worry (food\_supply, water\_scarcity)} \\
-\addlinespace[0.25em]
-12 & Merci pour vos précédentes réponses ! Nous approchons de la fin de l'entretien. En repensant à ce que vous m'avez dit sur la Taxe Carbone et sur le lien entre activités humaines et modifications environnementales […] & Non, ma perception elle n'influence pas vraiment mon opinion sur la taxe carbone parce que je suis tiraillé entre les conséquences économiques et sociales d'une taxe carbone qui augmenterait de manière exponentielle le coût du de la tonne de CO2 et euh et les conséquences à plus long terme de des activités humaines sur l'environnement. J'ai l'impression qu'on est dans une espèce d'impasse et que euh que je suis pas sûr de comment faire pour concilier les deux enjeux. & \dagcode{economic\_environmental\_trade\_off = future\_environmental\_benefits \& immediate\_recession --> deadlock --> ambivalent\_acceptability} \\
-\addlinespace[0.25em]
-13 & Y a-t-il des points de vue, des expériences ou des informations que vous avez le sentiment de ne pas avoir pu aborder et que vous souhaiteriez partager ? & non & \dagcode{none} \\
-\addlinespace[0.25em]
-14 & Une dernière question : **en repensant à notre conversation, quelle est la raison principale qui explique pourquoi vous jugeriez acceptable ou non l’augmentation de la Taxe Carbone ?** & Je jugerais l'augmentation de la taxe carbone non acceptable du fait des conséquences sociales et économiques qui seraient beaucoup plus douloureuses à court terme pour le pays et potentiellement pour la société en général que les conséquences à moyen terme et à long terme du changement environnemental. & \dagcode{carbon\_tax --> fuel\_price\_increase --> economic\_environmental\_trade\_off = future\_environmental\_benefits < immediate\_recession --> unacceptability} \\
-\addlinespace[0.25em]
-15 & Bonjour, je suis un assistant IA chargé de conduire cet entretien. Merci beaucoup de prendre le temps de participer. Vos réponses sont essentielles pour notre étude. Il nous serait très précieux que vos réponses soient […] & Bonjour, je crois que c'est une taxe que doivent payer certains véhicules trop polluants & \emph{Not yet harmonized} \\
-\addlinespace[0.25em]
-
-\end{longtable}
-
-\end{landscape}
+Reuse of the app, protocol, or adapted workflow should cite both the repository and the associated paper.
 
 \end{document}

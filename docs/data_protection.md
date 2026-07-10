@@ -2,7 +2,7 @@
 
 ## Principle
 
-This repository is designed for methodological transparency without disclosure of sensitive participant data. It publishes the coding grammar and software used in the study, but excludes the empirical material to which the software was applied.
+This repository is an open-science release of code and methodology, not a data release. It supports transparency for the paper **"Using AI-led semi-structured interviews to explore the connection between Carbon Tax narratives and climate anxiety"** while excluding materials that could identify or expose participants.
 
 ## Excluded Materials
 
@@ -11,26 +11,23 @@ The following materials must not be committed:
 - interview transcripts;
 - participant responses;
 - raw or cleaned coding workbooks;
-- harmonized coding workbooks;
+- `coding_interview_base.xlsx`;
+- `harmonization_interview_base.xlsx`;
+- `harmonized_interview_base.xlsx`;
+- coder-specific workbooks;
 - agreement reports containing row-level coding;
 - LLM coding checkpoints or manifests;
 - database exports;
 - local backup folders;
-- files that can directly or indirectly identify participants.
+- screenshots or documents containing participant responses.
 
-## File Types Ignored by Default
+## Why the Data Are Excluded
 
-The `.gitignore` blocks common data-bearing formats, including Excel, CSV, TSV, JSONL, parquet, database, and statistical package files. It also blocks project-specific files such as `Topics_Harmonization.xlsx`, `coding_agreement_report.xlsx`, and `llm_coding_*` artifacts.
+The interview data may contain sensitive narratives, personal experiences, social positions, or contextual details. Publishing the apps and protocol is sufficient for methodological transparency; publishing the empirical workbooks would be inappropriate without a separate anonymization and ethics review process.
 
 ## Local Use
 
-Researchers should run the apps against a private workbook stored outside the repository, or against an ignored local copy. The recommended approach is:
-
-```bash
-export TOPICS_HARMONIZATION_FILE="/absolute/path/to/private/Topics_Harmonization.xlsx"
-```
-
-Local environment variables can map private column names to the anonymized public defaults. These local settings should remain outside version control.
+Researchers should store private workbooks outside version control, preferably in a local `private_workbooks/` folder ignored by Git. The public apps default to this local structure.
 
 ## Pre-Publication Check
 
@@ -40,4 +37,4 @@ Before committing or pushing, run:
 python3 scripts/privacy_check.py
 ```
 
-This script is a guardrail, not a substitute for human review. Any new output file should still be inspected before publication.
+This script blocks common data-bearing formats and project-specific filenames. It is a guardrail, not a substitute for human review.

@@ -1,53 +1,74 @@
 # Private Workbook Schema
 
-The applications expect an Excel workbook stored locally. The workbook is not included in this repository.
+The applications expect local Excel workbooks. These files are not included in the repository.
 
-## Recommended Public Column Names
+## Workbook 1: `coding_interview_base.xlsx`
 
-| Column | Required by manual coding app | Required by harmonization app | Description |
-|---|---:|---:|---|
-| `question` | Yes | Yes | Interview question or prompt. |
-| `response` | Yes | Yes | Participant response. This column is sensitive and must not be published. |
-| `Topics_Coder_A` | Created if missing | Yes | Coder A topic sequence. |
-| `Topics_Coder_B` | Created if missing | Yes | Coder B topic sequence. |
-| `Topics_Coder_C` | Created if missing | Yes | Coder C topic sequence. |
-| `Topics_Harmonized` | No | Created if missing | Final harmonized topic sequence. |
+This workbook is used for independent manual coding.
 
-## Local Column Mapping
+Minimum columns:
 
-If the private workbook uses different column names, configure them locally:
+```text
+question
+response
+```
+
+Coder columns are created or expected according to the local coder configuration.
+
+Default for three coders:
+
+```text
+Topics_Coder_1
+Topics_Coder_2
+Topics_Coder_3
+```
+
+## Workbook 2: `harmonization_interview_base.xlsx`
+
+After all coders have added their columns, copy `coding_interview_base.xlsx` to `harmonization_interview_base.xlsx`.
+
+The harmonization input must contain:
+
+```text
+question
+response
+Topics_Coder_1
+Topics_Coder_2
+...
+Topics_Coder_N
+```
+
+## Workbook 3: `harmonized_interview_base.xlsx`
+
+The harmonization app writes the final output to this workbook. It contains the coder columns plus:
+
+```text
+Topics_Harmonized
+```
+
+If this output workbook already exists, the harmonization app resumes from it.
+
+## Configuring the Number of Coders
+
+Use:
 
 ```bash
-export TOPICS_HARMONIZATION_FILE="/absolute/path/to/private/Topics_Harmonization.xlsx"
-export TOPICS_CODER_A_COL="private_column_name_for_coder_a"
-export TOPICS_CODER_B_COL="private_column_name_for_coder_b"
-export TOPICS_CODER_C_COL="private_column_name_for_coder_c"
-export TOPICS_HARMONIZED_COL="Topics_Harmonized"
+export TOPICS_CODER_COUNT=2
 ```
 
-Do not commit shell profiles, `.env` files, or notebooks that reveal sensitive local paths or private column names.
+or explicit columns:
 
-## Minimal Workbook for Manual Coding
-
-The manual coding app can start from:
-
-```text
-question
-response
+```bash
+export TOPICS_CODER_COLUMNS="Coder_A_Topics,Coder_B_Topics,Coder_C_Topics,Coder_D_Topics"
 ```
 
-It will create the configured coder columns if they are missing.
+## Configuring Workbook Paths
 
-## Minimal Workbook for Harmonization
-
-The harmonization app requires:
-
-```text
-question
-response
-Topics_Coder_A
-Topics_Coder_B
-Topics_Coder_C
+```bash
+export INTERVIEW_WORKBOOK_DIR="/absolute/path/to/private/workbooks"
+export CODING_INTERVIEW_BASE="coding_interview_base.xlsx"
+export HARMONIZATION_INTERVIEW_BASE="harmonization_interview_base.xlsx"
+export HARMONIZED_INTERVIEW_BASE="harmonized_interview_base.xlsx"
 ```
 
-It will create `Topics_Harmonized` if it is missing.
+Do not commit `.env` files, shell profiles, notebooks, screenshots, or documents that reveal sensitive local paths or private data.

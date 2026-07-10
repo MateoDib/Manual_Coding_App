@@ -24,6 +24,9 @@ DENIED_EXTENSIONS = {
 }
 
 DENIED_NAME_FRAGMENTS = {
+    "coding_interview_base",
+    "harmonization_interview_base",
+    "harmonized_interview_base",
     "topics_harmonization",
     "coding_agreement_report",
     "llm_coding",
@@ -31,18 +34,22 @@ DENIED_NAME_FRAGMENTS = {
     "qa_llm_coding_base",
     "participant",
     "transcript",
-    "interview",
 }
 
-ALLOWED_TEXT_FILES = {
-    "docs/harmonized_topic_aggregation_protocol.tex",
+DENIED_CONTENT_SNIPPETS = {
+    "Question excerpt",
+    "Response excerpt",
+    "Bonjour, je suis un assistant IA chargé",
+    "Not yet harmonized",
+}
+
+CONTENT_SCAN_EXEMPT_PATHS = {
+    "scripts/privacy_check.py",
 }
 
 
 def iter_candidate_files() -> list[Path]:
-    """Return tracked files when Git exists, otherwise all visible files."""
-    git_dir = ROOT / ".git"
-    if git_dir.exists():
+    if (ROOT / ".git").exists():
         result = subprocess.run(
             ["git", "ls-files", "-z"],
             cwd=ROOT,
@@ -50,46 +57,42 @@ def iter_candidate_files() -> list[Path]:
             capture_output=True,
             text=False,
         )
-        return [
-            ROOT / item.decode("utf-8")
-            for item in result.stdout.split(b"\0")
-            if item
-        ]
+        return [ROOT / item.decode("utf-8") for item in result.stdout.split(b"\0") if item]
 
-    return [
-        path
-        for path in ROOT.rglob("*")
-        if path.is_file() and ".git" not in path.parts
-    ]
+    return [path for path in ROOT.rglob("*") if path.is_file() and ".git" not in path.parts]
+
+
+def contains_denied_content(path: Path) -> bool:
+    relative = path.relative_to(ROOT).as_posix()
+    if relative in CONTENT_SCAN_EXEMPT_PATHS:
+        return False
+    if path.suffix.lower() not in {".md", ".py", ".tex", ".txt", ".cff"}:
+        return False
+    try:
+        text = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return True
+    return any(snippet in text for snippet in DENIED_CONTENT_SNIPPETS)
 
 
 def is_denied(path: Path) -> bool:
-    relative = path.relative_to(ROOT).as_posix()
     name = path.name.lower()
-
-    if relative in ALLOWED_TEXT_FILES:
-        return False
-
     if path.suffix.lower() in DENIED_EXTENSIONS:
         return True
-
-    return any(fragment in name for fragment in DENIED_NAME_FRAGMENTS)
+    if any(fragment in name for fragment in DENIED_NAME_FRAGMENTS):
+        return True
+    return contains_denied_content(path)
 
 
 def main() -> int:
-    denied_files = sorted(
-        path.relative_to(ROOT).as_posix()
-        for path in iter_candidate_files()
-        if is_denied(path)
-    )
-
-    if denied_files:
+    denied = sorted(path.relative_to(ROOT).as_posix() for path in iter_candidate_files() if is_denied(path))
+    if denied:
         print("Privacy check failed. Remove or ignore these files before publishing:")
-        for path in denied_files:
+        for path in denied:
             print(f"- {path}")
         return 1
 
-    print("Privacy check passed. No blocked data-like files were found.")
+    print("Privacy check passed. No blocked data-like files or known sensitive excerpts were found.")
     return 0
 
 

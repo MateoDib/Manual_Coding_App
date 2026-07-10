@@ -1,10 +1,26 @@
 # Coding Protocol
 
+## Publication Context
+
+This protocol accompanies the open-science release for **"Using AI-led semi-structured interviews to explore the connection between Carbon Tax narratives and climate anxiety"** by **Matéo Dib, Thibaut Arpinon, and Bérangère Legendre**.
+
+It explains how the project moved from qualitative interview material to **DAG-compatible topic sequences**. The method can be reused in other projects, but topic labels, phase rules, and ending nodes should be adapted to the new research question.
+
 ## Purpose
 
-The coding protocol translates qualitative interview responses into compact, DAG-compatible topic sequences. The objective is not only to identify themes, but also to preserve the structure of participants' reasoning: causal chains, definitions, trade-offs, coexisting concerns, priorities, information sources, and actor-specific qualifications.
+The aim is not only to assign topics. Each coded response is represented as an ordered sequence of tokens that preserves the structure of a participant's reasoning:
 
-Each coded response is represented as an ordered sequence of tokens. Tokens are separated by spaces, except when parentheses or square brackets are attached to a topic token.
+- causal or consequential chains;
+- definitions and framings;
+- distinct narrative paths;
+- additive policy packages;
+- coexisting concerns;
+- priority or trade-off relations;
+- information sources;
+- actor-specific scope qualifiers;
+- final acceptability or affective endpoints.
+
+These sequences can be interpreted qualitatively and can later be translated into graph-like or DAG-style representations.
 
 ## Token Types
 
@@ -17,9 +33,11 @@ Each coded response is represented as an ordered sequence of tokens. Tokens are 
 | Additive operator | `+` | `A + B` means that A and B form a combined policy, package, or bundle. |
 | Coexistence operator | `&` | `A & B` means that A and B coexist without additive meaning. |
 | Priority operators | `<`, `>` | `A < B` means B prevails over A; `A > B` means A prevails over B. |
-| Source marker | `|` | `A --> B | newspaper` records an information source. |
+| Source marker | <code>&#124;</code> | `A --> B \| newspaper` records an information source. |
 | Aggregated topic | `green_transport_development (electric_vehicle_infrastructure, soft_mobility)` | A broad topic with more specific subtopics. |
 | Scope-qualified topic | `fuel_price_increase[others]` | A topic qualified by the actor, group, or standpoint concerned. |
+
+The source-marker row uses the HTML entity `<code>&#124;</code>` so Markdown does not interpret the coding symbol as a table separator.
 
 ## Normalization Rules
 
@@ -31,11 +49,13 @@ purchasing_power_loss
 economic_environmental_trade_off
 ```
 
-Internal spaces are removed during normalization. The preferred written form is therefore compact and explicit.
+The apps also accept typed labels with spaces and normalize them to underscore-separated labels.
 
 ## Directional Topic Labels
 
-The arrow `-->` always encodes a positive causal or logical relation. The direction of variation must be placed in the topic label itself. Coders should therefore prefer directional labels:
+The arrow `-->` always encodes a positive causal or logical relation. The direction of variation must be placed in the topic label itself.
+
+Prefer:
 
 ```text
 fuel_price_increase
@@ -48,16 +68,29 @@ carbon_emission_reduction
 carbon_emission_increase
 ```
 
-Neutral labels such as `fuel_price`, `price_level`, or `carbon_emissions` should be avoided when the direction of change matters.
+Avoid neutral labels such as `fuel_price`, `price_level`, or `carbon_emissions` when the direction of change matters.
 
-For example:
+Example:
 
 ```text
 carbon_tax --> fuel_price_increase --> unacceptability
 carbon_tax --> fuel_price_decrease --> acceptability
 ```
 
-Both sequences use a positive arrow, but they encode substantively different mechanisms because the direction is carried by the node labels.
+Both sequences use a positive arrow, but they encode different mechanisms because direction is carried by the topic labels.
+
+## DAG Syntax Operators
+
+| Symbol | Name | Interpretation |
+|---|---|---|
+| `-->` | Positive causal link | `A --> B` means that A leads to B in the participant's reasoning. |
+| `=` | Definition or equivalence | `A = B` means that the participant defines, frames, or understands A as B. |
+| `;` | Distinct narrative path | Separates two distinct reasoning paths within the same answer. |
+| `+` | Additive combination | `A + B` means that A and B form a combined package or bundle. |
+| `&` | Coexistence | `A & B` means that A and B coexist without being additive components. |
+| `<` | Priority or dominance | `A < B` means that B prevails over A. |
+| `>` | Priority or dominance | `A > B` means that A prevails over B. |
+| <code>&#124;</code> | Information source marker | `A --> B \| newspaper` records where the information came from. |
 
 ## Aggregated Topics
 
@@ -66,8 +99,6 @@ Parentheses attach subtopics to a broader concept:
 ```text
 green_transport_development (electric_vehicle_infrastructure, soft_mobility)
 ```
-
-This indicates that electric vehicle infrastructure and soft mobility are treated as components of green transport development in the participant's reasoning.
 
 Aggregated topics can appear inside longer sequences:
 
@@ -135,4 +166,4 @@ This rule is applied only when the current response genuinely elaborates, qualif
 
 ## Validation Philosophy
 
-The Streamlit apps warn about likely syntax issues, such as repeated operators, unbalanced brackets, or standalone scope punctuation. These warnings do not block saving because the final coding remains an interpretive qualitative act. They are designed to support consistency, not to replace coder judgment.
+The apps warn about likely syntax issues, such as repeated operators, unbalanced brackets, or standalone scope punctuation. These warnings do not block saving because final coding remains an interpretive qualitative act. They support consistency without replacing coder judgment.

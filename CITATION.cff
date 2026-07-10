@@ -1,11 +1,25 @@
 cff-version: 1.2.0
-message: "If you use this repository, please cite it using the metadata below."
-title: "DAG-Compatible Topic Coding and Harmonization"
+message: "If you reuse, adapt, redistribute, or cite this software, please cite both the repository and the associated paper."
+title: "Manual Coding App for DAG-Compatible Qualitative Coding"
 authors:
   - family-names: "Dib"
-    given-names: "Mateo"
-date-released: "2026-07-09"
-version: "0.1.0"
+    given-names: "Matéo"
+  - family-names: "Arpinon"
+    given-names: "Thibaut"
+  - family-names: "Legendre"
+    given-names: "Bérangère"
+date-released: "2026-07-10"
+version: "0.2.0"
 license: "MIT"
-repository-code: "https://github.com/MateoDib/dag-compatible-topic-coding-harmonization"
-abstract: "Code and documentation for DAG-compatible manual topic coding and harmonization of qualitative interview material, distributed without the underlying sensitive participant data."
+repository-code: "https://github.com/MateoDib/Manual_Coding_App"
+abstract: "Open-science code and documentation for DAG-compatible manual topic coding and harmonization of qualitative interview material, released without the underlying sensitive participant data."
+preferred-citation:
+  type: article
+  title: "Using AI-led semi-structured interviews to explore the connection between Carbon Tax narratives and climate anxiety"
+  authors:
+    - family-names: "Dib"
+      given-names: "Matéo"
+    - family-names: "Arpinon"
+      given-names: "Thibaut"
+    - family-names: "Legendre"
+      given-names: "Bérangère"
