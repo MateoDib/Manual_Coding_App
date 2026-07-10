@@ -60,6 +60,29 @@ export TOPICS_CODER_COLUMNS="Topics_Coder_1,Topics_Coder_2,Topics_Coder_3,Topics
 
 The harmonization app requires all configured coder columns to be present in `harmonization_interview_base.xlsx`.
 
+## Required Ending Nodes
+
+The apps are prefilled with the ending nodes used in the paper:
+
+```text
+acceptability
+unacceptability
+ambivalent_acceptability
+```
+
+They can be enabled, disabled, or edited directly in the app sidebar. For reuse in another project, you can also configure them before launch:
+
+```bash
+export ENABLE_REQUIRED_ENDING_NODES=1
+export REQUIRED_ENDING_NODES="acceptability,unacceptability,ambivalent_acceptability"
+```
+
+To disable them by default:
+
+```bash
+export ENABLE_REQUIRED_ENDING_NODES=0
+```
+
 ## Optional Path Configuration
 
 If your private workbooks are stored elsewhere:

@@ -106,6 +106,8 @@ Aggregated topics can appear inside longer sequences:
 alternative_policy = carbon_tax + green_transport_development (electric_vehicle_infrastructure, soft_mobility) --> acceptability
 ```
 
+In the apps, the substantive subtopic selector is built only from subtopics already observed inside parentheses in existing coding columns. Coders can still paste or edit the full parentheses content when the current response requires a new or more precise subtopic.
+
 ## Scope Qualifiers
 
 Square brackets indicate the actor, group, social position, or point of view to which a node applies:
@@ -123,6 +125,20 @@ unreadiness[modest_household, company (agricultural_sector, sme)]
 ```
 
 The outer square brackets attach the whole scope to the topic. Parentheses inside the scope describe subgroups.
+
+In the apps, the scope selector is built only from scopes already observed inside square brackets in existing coding columns. Coders can still paste or edit the full square-bracket content when a new actor, group, or scoped subgroup is needed.
+
+## Required Ending Nodes
+
+For the paper, the app is prefilled with:
+
+```text
+acceptability
+unacceptability
+ambivalent_acceptability
+```
+
+These ending nodes can be enabled, disabled, or edited in the app sidebar. They are therefore project defaults rather than universal rules: researchers reusing the app should adapt the number and value of ending nodes to their own research question.
 
 ## Phase-Specific Coding Rules
 

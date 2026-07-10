@@ -37,21 +37,19 @@ REQUIRED_ENDING_NODES = [
     "ambivalent_acceptability",
 ]
 
-DEFAULT_SCOPE_QUALIFIERS = [
-    "self",
-    "future_self",
-    "others",
-    "households",
-    "firms",
-    "low_income_households",
-    "rural_households",
-    "urban_households",
-    "car_dependent_people",
-    "public_authorities",
-]
-
 TOKEN_PATTERN = re.compile(r"(-->|[=;+&<>|])")
 TOPIC_CHUNK_PATTERN = re.compile(r"[A-Za-z0-9_]+(?:\s*\([^)]*\))?(?:\[[^]]*\])?")
+
+DAG_OPERATOR_LABELS = {
+    "-->": "causal -->",
+    "=": "definition =",
+    ";": "path ;",
+    "+": "add +",
+    "&": "coexist &",
+    "<": "priority <",
+    ">": "priority >",
+    "|": "source |",
+}
 
 
 def workbook_path(env_var: str, default_name: str) -> Path:
@@ -101,6 +99,21 @@ def configured_coder_map() -> dict[str, str]:
     return {f"Coder {index}": column for index, column in enumerate(configured_coder_columns(), start=1)}
 
 
+def parse_token_list(value: str) -> list[str]:
+    parts = re.split(r"[\n,;]+", str(value))
+    return [normalize_topic(part) for part in parts if normalize_topic(part)]
+
+
+def configured_required_ending_nodes() -> list[str]:
+    enabled = os.environ.get("ENABLE_REQUIRED_ENDING_NODES", "1").strip().lower()
+    if enabled in {"0", "false", "no", "off"}:
+        return []
+    configured = os.environ.get("REQUIRED_ENDING_NODES", "").strip()
+    if configured:
+        return parse_token_list(configured)
+    return REQUIRED_ENDING_NODES.copy()
+
+
 def normalize_topic(value: str) -> str:
     value = str(value).strip()
     if not value:
@@ -113,26 +126,85 @@ def normalize_topic(value: str) -> str:
     return value.strip("_,")
 
 
+def strip_wrapping(value: str, left: str, right: str) -> str:
+    value = str(value).strip()
+    if value.startswith(left) and value.endswith(right):
+        return value[1:-1].strip()
+    return value
+
+
+def split_top_level_commas(value: str) -> list[str]:
+    parts: list[str] = []
+    current: list[str] = []
+    depth = 0
+    for char in str(value):
+        if char == "(":
+            depth += 1
+            current.append(char)
+        elif char == ")":
+            depth = max(0, depth - 1)
+            current.append(char)
+        elif char == "," and depth == 0:
+            part = "".join(current).strip()
+            if part:
+                parts.append(part)
+            current = []
+        else:
+            current.append(char)
+    part = "".join(current).strip()
+    if part:
+        parts.append(part)
+    return parts
+
+
+def normalize_parentheses_content(value: str) -> str:
+    value = strip_wrapping(value, "(", ")")
+    parts = [normalize_topic(part) for part in split_top_level_commas(value)]
+    return ", ".join(part for part in parts if part)
+
+
+def normalize_scope_part(value: str) -> str:
+    value = str(value).strip()
+    match = re.fullmatch(r"([^()]+)\((.*)\)", value)
+    if not match:
+        return normalize_topic(value)
+    base = normalize_topic(match.group(1))
+    subgroups = normalize_parentheses_content(match.group(2))
+    if not base:
+        return ""
+    if not subgroups:
+        return base
+    return f"{base} ({subgroups})"
+
+
 def normalize_scope(value: str) -> str:
-    value = str(value).strip().strip("[]").lower()
-    value = re.sub(r"\s+", "_", value)
-    value = re.sub(r"_*,_*_", ",_", value)
-    return value.strip("_,")
+    value = strip_wrapping(value, "[", "]")
+    parts = [normalize_scope_part(part) for part in split_top_level_commas(value)]
+    return ", ".join(part for part in parts if part)
 
 
 def make_aggregate_topic(base: str, subtopics: str) -> str:
     base_topic = normalize_topic(base)
-    clean_subtopics = [normalize_topic(part) for part in re.split(r"[,;]", str(subtopics))]
-    clean_subtopics = [part for part in clean_subtopics if part]
+    clean_subtopics = normalize_parentheses_content(subtopics)
     if not base_topic:
         return ""
-    if not clean_subtopics:
+    if not clean_subtopics.strip():
         return base_topic
-    return f"{base_topic} ({', '.join(clean_subtopics)})"
+    return f"{base_topic} ({clean_subtopics})"
+
+
+def normalize_topic_expression(value: str) -> str:
+    value = str(value).strip()
+    if not value:
+        return ""
+    match = re.fullmatch(r"([^()[\]]+)\((.*)\)", value)
+    if match:
+        return make_aggregate_topic(match.group(1), match.group(2))
+    return normalize_topic(value)
 
 
 def make_scoped_topic(topic: str, scope: str) -> str:
-    clean_topic = str(topic).strip()
+    clean_topic = normalize_topic_expression(topic)
     clean_scope = normalize_scope(scope)
     if not clean_topic or not clean_scope:
         return clean_topic
@@ -180,14 +252,60 @@ def extract_substantive_topics(value: object) -> list[str]:
     return sorted(topics)
 
 
-def build_topic_dictionary(df: pd.DataFrame, columns: Iterable[str]) -> list[str]:
-    topics: set[str] = set(REQUIRED_ENDING_NODES)
+def build_topic_dictionary(df: pd.DataFrame, columns: Iterable[str], extra_topics: Iterable[str] = ()) -> list[str]:
+    topics: set[str] = set(extra_topics)
     for col in columns:
         if col not in df.columns:
             continue
         for value in df[col].fillna(""):
             topics.update(extract_substantive_topics(value))
     return sorted(topics)
+
+
+def extract_subtopics(value: object) -> list[str]:
+    text = normalize_sequence(value)
+    text_without_scopes = re.sub(r"\[[^\]]*\]", "", text)
+    subtopics: set[str] = set()
+    for content in re.findall(r"\(([^)]*)\)", text_without_scopes):
+        for part in split_top_level_commas(content):
+            clean = normalize_topic(part)
+            if clean:
+                subtopics.add(clean)
+    return sorted(subtopics)
+
+
+def extract_scope_qualifiers(value: object) -> list[str]:
+    text = normalize_sequence(value)
+    scopes: set[str] = set()
+    for content in re.findall(r"\[([^\]]*)\]", text):
+        normalized_full_scope = normalize_scope(content)
+        if normalized_full_scope:
+            scopes.add(normalized_full_scope)
+        for part in split_top_level_commas(content):
+            normalized_part = normalize_scope_part(part)
+            if normalized_part:
+                scopes.add(normalized_part)
+    return sorted(scopes)
+
+
+def build_subtopic_dictionary(df: pd.DataFrame, columns: Iterable[str]) -> list[str]:
+    subtopics: set[str] = set()
+    for col in columns:
+        if col not in df.columns:
+            continue
+        for value in df[col].fillna(""):
+            subtopics.update(extract_subtopics(value))
+    return sorted(subtopics)
+
+
+def build_scope_dictionary(df: pd.DataFrame, columns: Iterable[str]) -> list[str]:
+    scopes: set[str] = set()
+    for col in columns:
+        if col not in df.columns:
+            continue
+        for value in df[col].fillna(""):
+            scopes.update(extract_scope_qualifiers(value))
+    return sorted(scopes)
 
 
 def row_candidate_topics(row: pd.Series, columns: Iterable[str]) -> list[str]:

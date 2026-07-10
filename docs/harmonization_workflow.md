@@ -42,10 +42,9 @@ The app supports:
 - navigation across rows;
 - one, two, or N coder columns;
 - reusable topic dictionaries built from existing coding;
-- candidate topics from the current row;
-- DAG operators and required ending nodes;
-- aggregated topics with parentheses;
-- scope qualifiers with square brackets;
+- DAG operators and configurable required ending nodes;
+- aggregated topics with parentheses, with selectors limited to existing substantive subtopics;
+- scope qualifiers with square brackets, with selectors limited to existing scopes or scoped groups;
 - text editing for complex sequences;
 - warnings for likely syntax issues;
 - automatic local backups before overwriting an existing workbook.

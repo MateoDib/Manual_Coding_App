@@ -4,15 +4,17 @@ import pandas as pd
 import streamlit as st
 
 from coding_utils import (
+    DAG_OPERATOR_LABELS,
     DAG_OPERATORS,
-    DEFAULT_SCOPE_QUALIFIERS,
     HARMONIZED_COL,
     QUESTION_COL,
-    REQUIRED_ENDING_NODES,
     RESPONSE_COL,
     append_token,
+    build_scope_dictionary,
+    build_subtopic_dictionary,
     build_topic_dictionary,
     configured_coder_map,
+    configured_required_ending_nodes,
     harmonization_base_path,
     harmonized_base_path,
     join_sequence,
@@ -20,6 +22,7 @@ from coding_utils import (
     make_aggregate_topic,
     make_scoped_topic,
     normalize_topic,
+    parse_token_list,
     row_candidate_topics,
     save_private_workbook,
     validate_sequence,
@@ -39,7 +42,12 @@ st.markdown(
     <style>
     .block-container {max-width: 98%; padding-top: 1rem;}
     textarea {font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;}
-    div[data-testid="stButton"] button {width: 100%;}
+    div[data-testid="stButton"] button {
+        width: 100%;
+        min-height: 2.35rem;
+        white-space: normal;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -69,14 +77,43 @@ def current_sequence(row_index: int) -> str:
     return st.session_state.get(f"harmonized_text_{row_index}", "")
 
 
-def render_token_buttons(tokens: list[str], row_index: int, prefix: str, columns: int = 4) -> None:
+def sidebar_required_ending_nodes() -> list[str]:
+    default_nodes = configured_required_ending_nodes()
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("Coding options")
+    enabled = st.sidebar.checkbox(
+        "Enable required ending nodes",
+        value=bool(default_nodes),
+        help="When enabled, these study-specific ending nodes are available as shortcut buttons.",
+    )
+    raw_nodes = st.sidebar.text_area(
+        "Required ending nodes",
+        value="\n".join(default_nodes),
+        height=96,
+        disabled=not enabled,
+        help="Use one node per line, or separate nodes with commas or semicolons.",
+    )
+    if not enabled:
+        return []
+    return parse_token_list(raw_nodes)
+
+
+def render_token_buttons(
+    tokens: list[str],
+    row_index: int,
+    prefix: str,
+    columns: int = 4,
+    labels: dict[str, str] | None = None,
+) -> None:
     if not tokens:
         st.caption("No tokens available.")
         return
     grid = st.columns(columns)
     for i, token in enumerate(tokens):
         with grid[i % columns]:
-            if st.button(token, key=f"{prefix}_{row_index}_{i}_{token}"):
+            display_label = labels.get(token, token) if labels else token
+            help_text = f"Insert `{token}`" if display_label != token else None
+            if st.button(display_label, key=f"{prefix}_{row_index}_{i}_{token}", help=help_text):
                 set_sequence(row_index, append_token(current_sequence(row_index), token))
                 st.rerun()
 
@@ -138,6 +175,8 @@ st.sidebar.write(f"Remaining: **{n_rows - harmonized_count}**")
 if st.session_state.get("backup_path_harmonization"):
     st.sidebar.caption(f"Backup: {st.session_state['backup_path_harmonization']}")
 
+required_ending_nodes = sidebar_required_ending_nodes()
+
 row = df.iloc[row_index]
 init_row_state(row_index, str(row[HARMONIZED_COL]))
 
@@ -174,21 +213,26 @@ for coder_name, coder_col in CODER_COLS.items():
             st.rerun()
 
 all_topic_columns = coder_columns + [HARMONIZED_COL]
-all_topics = build_topic_dictionary(df, all_topic_columns)
+all_topics = build_topic_dictionary(df, all_topic_columns, extra_topics=required_ending_nodes)
+existing_subtopics = build_subtopic_dictionary(df, all_topic_columns)
+existing_scopes = build_scope_dictionary(df, all_topic_columns)
 candidate_topics = row_candidate_topics(row, coder_columns)
 
-with st.expander("Token shortcuts", expanded=True):
-    st.markdown("##### DAG operators")
-    render_token_buttons(DAG_OPERATORS, row_index, "operator", columns=8)
+st.markdown("### Token shortcuts")
+st.markdown("##### DAG operators")
+render_token_buttons(DAG_OPERATORS, row_index, "operator", columns=8, labels=DAG_OPERATOR_LABELS)
 
-    st.markdown("##### Required ending nodes")
-    render_token_buttons(REQUIRED_ENDING_NODES, row_index, "ending", columns=3)
+st.markdown("##### Required ending nodes")
+if required_ending_nodes:
+    render_token_buttons(required_ending_nodes, row_index, "ending", columns=3)
+else:
+    st.caption("Required ending nodes are disabled.")
 
-    st.markdown("##### Candidate topics from coder sequences")
-    render_token_buttons(candidate_topics, row_index, "candidate", columns=5)
+st.markdown("##### Candidate topics from coder sequences")
+render_token_buttons(candidate_topics, row_index, "candidate", columns=5)
 
-    with st.expander("Topic dictionary", expanded=False):
-        render_token_buttons(all_topics, row_index, "dictionary", columns=5)
+with st.expander("Topic dictionary", expanded=False):
+    render_token_buttons(all_topics, row_index, "dictionary", columns=5)
 
 st.markdown("### Harmonized sequence")
 text_key = f"harmonized_text_{row_index}"
@@ -212,9 +256,24 @@ with col_topic:
 with col_aggregate:
     st.markdown("#### Add aggregate")
     aggregate_base = st.text_input("Base topic", key=f"aggregate_base_{row_index}")
-    aggregate_subtopics = st.text_input("Subtopics, comma-separated", key=f"aggregate_subtopics_{row_index}")
+    subtopic_options = ["", *existing_subtopics]
+    selected_subtopic = st.selectbox(
+        "Type or select a substantive subtopic",
+        subtopic_options,
+        format_func=lambda value: value or "Select an existing subtopic",
+        help="Existing values found inside parentheses, e.g. `(electric_vehicle_infrastructure)`.",
+        key=f"aggregate_selected_subtopic_{row_index}",
+    )
+    if not existing_subtopics:
+        st.caption("No existing subtopics yet; paste a new parentheses content below.")
+    aggregate_subtopics = st.text_input(
+        "Or paste/edit the full parentheses content",
+        placeholder="(electric_vehicle_infrastructure, soft_mobility)",
+        help="Use the content that should appear inside parentheses.",
+        key=f"aggregate_subtopics_{row_index}",
+    )
     if st.button("Add aggregate", key=f"add_aggregate_{row_index}"):
-        token = make_aggregate_topic(aggregate_base, aggregate_subtopics)
+        token = make_aggregate_topic(aggregate_base, aggregate_subtopics or selected_subtopic)
         if token:
             set_sequence(row_index, append_token(sequence_text, token))
             st.rerun()
@@ -222,12 +281,24 @@ with col_aggregate:
 with col_scope:
     st.markdown("#### Add scope")
     scope_topic = st.text_input("Topic to qualify", value="", key=f"scope_topic_{row_index}")
-    scope_value = st.selectbox("Scope qualifier", DEFAULT_SCOPE_QUALIFIERS + ["custom"], key=f"scope_value_{row_index}")
-    custom_scope = ""
-    if scope_value == "custom":
-        custom_scope = st.text_input("Custom scope", key=f"custom_scope_{row_index}")
+    scope_options = ["", *existing_scopes]
+    scope_value = st.selectbox(
+        "Type or select a scope qualifier or scoped group",
+        scope_options,
+        format_func=lambda value: f"[{value}]" if value else "Select an existing scope",
+        help="Existing values found inside square brackets, e.g. `[self]` or `[company (agricultural_sector, sme)]`.",
+        key=f"scope_value_{row_index}",
+    )
+    if not existing_scopes:
+        st.caption("No existing scopes yet; paste a new square-bracket content below.")
+    custom_scope = st.text_input(
+        "Or paste/edit the full square-bracket content",
+        placeholder="[modest_household, company (agricultural_sector, sme)]",
+        help="Use the content that should appear inside square brackets.",
+        key=f"custom_scope_{row_index}",
+    )
     if st.button("Add scoped topic", key=f"add_scope_{row_index}"):
-        scope = custom_scope if scope_value == "custom" else scope_value
+        scope = custom_scope or scope_value
         token = make_scoped_topic(scope_topic, scope)
         if token:
             set_sequence(row_index, append_token(sequence_text, token))

@@ -71,4 +71,15 @@ export HARMONIZATION_INTERVIEW_BASE="harmonization_interview_base.xlsx"
 export HARMONIZED_INTERVIEW_BASE="harmonized_interview_base.xlsx"
 ```
 
+## Configuring Required Ending Nodes
+
+The default ending nodes are the ones used in the associated paper, but they can be changed in the app sidebar or through environment variables:
+
+```bash
+export ENABLE_REQUIRED_ENDING_NODES=1
+export REQUIRED_ENDING_NODES="acceptability,unacceptability,ambivalent_acceptability"
+```
+
+Use `ENABLE_REQUIRED_ENDING_NODES=0` to disable them by default.
+
 Do not commit `.env` files, shell profiles, notebooks, screenshots, or documents that reveal sensitive local paths or private data.
