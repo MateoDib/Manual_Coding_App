@@ -1,20 +1,19 @@
 # Manual Coding App: DAG-Compatible Topic Coding and Harmonization
 
-This repository provides public, publication-oriented code and documentation for manual topic coding and harmonization of qualitative interview material. It is designed to support methodological transparency while keeping all sensitive participant data out of version control.
+This repository provides documentation for the manual coding of qualitative interview material used in "Using AI-led semi-structured interviews to explore the connection between Carbon Tax narratives and climate anxiety" for transparency and open-science purpose.
 
 The repository contains two Streamlit applications:
 
 - `apps/manual_topic_coding_app.py`: coder-level manual topic coding.
 - `apps/topic_harmonization_app.py`: comparison of independent coder sequences and construction of a harmonized sequence.
 
-The underlying interview responses, coding workbooks, agreement reports, LLM checkpoints, and any participant-level data are intentionally excluded.
 
 ## Repository Scope
 
 This repository includes:
 
 - reusable code for manual coding and harmonization;
-- an English academic coding protocol;
+- a coding protocol;
 - a harmonization workflow description;
 - a private workbook schema;
 - a privacy check script;
@@ -25,7 +24,6 @@ It does not include:
 - Excel workbooks used for the study;
 - interview transcripts or participant responses;
 - row-level coding outputs;
-- JSONL checkpoints or LLM-derived outputs;
 - agreement reports;
 - database exports.
 
