@@ -2,7 +2,7 @@
 
 This repository provides the public code and documentation used in the open-science release accompanying the paper **"Using AI-led semi-structured interviews to explore the connection between Carbon Tax narratives and climate anxiety"**, co-authored by **Matéo Dib, Thibaut Arpinon, and Bérangère Legendre**.
 
-The repository is designed for transparency: it documents how the coding and harmonization were conducted, and it provides reusable applications for other qualitative projects. It does **not** publish the interview databases, participant responses, coder workbooks, LLM checkpoints, or agreement reports, because these materials may contain sensitive participant-level information.
+The repository is designed for transparency: it documents how the coding and harmonization were conducted, and it provides reusable applications for other qualitative projects. It does **not** publish the interview databases, participant responses, coder workbooks, or agreement reports, because these materials may contain sensitive participant-level information.
 
 ## What the Apps Do
 
