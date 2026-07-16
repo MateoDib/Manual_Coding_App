@@ -7,6 +7,10 @@ If you reuse, adapt, redistribute, teach with, or build on this app or its codin
 1. this repository; and
 2. the associated paper, once available.
 
+Recommended repository citation:
+
+> Dib, M. (2026). *Adaptive Manual Coding Application for Qualitative Research*. GitHub repository.
+
 Recommended repository citation metadata are provided in `CITATION.cff`.
 
 The apps may be adapted to other qualitative contexts, but the coding grammar, topic labels, phase-specific rules, and workbook schema should be reviewed and modified for the new research design.
