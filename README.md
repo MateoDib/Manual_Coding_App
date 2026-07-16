@@ -130,9 +130,9 @@ Both apps create local timestamped backups before overwriting an existing workbo
 
 This repository is released to make the coding procedure inspectable, reproducible, and adaptable. The apps can be reused in other qualitative projects if the coding grammar, workbook schema, and topic labels are adapted to the new research context.
 
-Any reuse, adaptation, redistribution, or scholarly use of this app must cite the repository and the associated paper. See `CITATION_POLICY.md` and `CITATION.cff`.
+Any reuse, adaptation, redistribution, teaching use, or scholarly use of this app must cite the repository and the associated paper. See `CITATION_POLICY.md` and `CITATION.cff`.
 
-Recommended repository citation:
+Required repository citation:
 
 > Dib, M. (2026). *Adaptive Manual Coding Application for Qualitative Research*. GitHub repository.
 
