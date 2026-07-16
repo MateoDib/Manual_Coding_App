@@ -132,6 +132,10 @@ This repository is released to make the coding procedure inspectable, reproducib
 
 Any reuse, adaptation, redistribution, or scholarly use of this app must cite the repository and the associated paper. See `CITATION_POLICY.md` and `CITATION.cff`.
 
+Recommended repository citation:
+
+> Dib, M. (2026). *Adaptive Manual Coding Application for Qualitative Research*. GitHub repository.
+
 ## Data Protection
 
 Do not commit:
