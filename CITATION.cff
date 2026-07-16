@@ -1,13 +1,9 @@
 cff-version: 1.2.0
 message: "If you reuse, adapt, redistribute, or cite this software, please cite both the repository and the associated paper."
-title: "Manual Coding App for DAG-Compatible Qualitative Coding"
+title: "Adaptive Manual Coding Application for Qualitative Research"
 authors:
   - family-names: "Dib"
     given-names: "Matéo"
-  - family-names: "Arpinon"
-    given-names: "Thibaut"
-  - family-names: "Legendre"
-    given-names: "Bérangère"
 date-released: "2026-07-10"
 version: "0.2.0"
 license: "MIT"
