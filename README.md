@@ -104,11 +104,198 @@ export TOPICS_HARMONIZED_COL="Topics_Harmonized"
 
 ## Installation
 
+These instructions install the software needed to run the Streamlit applications. They do not download or expose any interview data, participant responses, private coding workbooks, or agreement reports.
+
+### Prerequisites
+
+You need:
+
+- Git, to clone the repository;
+- Python 3.10 or newer, with Python 3.11 recommended;
+- a terminal application;
+- a web browser, because Streamlit opens the apps locally in the browser.
+
+A GitHub account is not required to clone and run this public repository. It is only needed if you want to fork the repository or push changes.
+
+### macOS
+
+1. Open Terminal.
+
+2. Install Apple's command-line developer tools, which include Git:
+
+```bash
+xcode-select --install
+```
+
+If Git is already installed, this command may report that the tools are already available. You can check with:
+
+```bash
+git --version
+```
+
+3. Check whether Python 3 is already installed:
+
+```bash
+python3 --version
+```
+
+If Python 3.10 or newer is not available, install Python from <https://www.python.org/downloads/> or, if you use Homebrew, run:
+
+```bash
+brew install python
+```
+
+4. Clone the repository and enter the project folder:
+
+```bash
+git clone https://github.com/MateoDib/Manual_Coding_App.git
+cd Manual_Coding_App
+```
+
+5. Create and activate a virtual environment:
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
 ```
+
+After activation, your terminal prompt usually shows `(.venv)`.
+
+6. Upgrade `pip` and install the required Python packages:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+7. Verify the installation:
+
+```bash
+python -c "import streamlit, pandas, openpyxl; import streamlit_sortables; print('Installation OK')"
+streamlit --version
+```
+
+8. Create the private workbook folder used by the apps:
+
+```bash
+mkdir -p private_workbooks
+```
+
+Place private Excel workbooks in `private_workbooks/` only on your local machine. This folder is ignored by Git.
+
+### Windows
+
+The recommended Windows shell is PowerShell.
+
+1. Install Git for Windows.
+
+Using `winget` in PowerShell:
+
+```powershell
+winget install --id Git.Git -e --source winget
+```
+
+Alternatively, download Git from <https://git-scm.com/download/win>. After installation, open a new PowerShell window and check:
+
+```powershell
+git --version
+```
+
+2. Install Python 3.10 or newer, with Python 3.11 recommended.
+
+Using `winget`:
+
+```powershell
+winget install --id Python.Python.3.11 -e --source winget
+```
+
+Alternatively, download Python from <https://www.python.org/downloads/windows/>. During installation, select **Add Python to PATH** if the installer offers this option.
+
+Check the installation:
+
+```powershell
+py --version
+```
+
+3. Clone the repository and enter the project folder:
+
+```powershell
+git clone https://github.com/MateoDib/Manual_Coding_App.git
+cd Manual_Coding_App
+```
+
+4. Create a virtual environment:
+
+```powershell
+py -3 -m venv .venv
+```
+
+5. Activate the virtual environment:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+If PowerShell blocks activation because script execution is restricted, allow scripts for the current PowerShell session only, then activate again:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+```
+
+After activation, your terminal prompt usually shows `(.venv)`.
+
+6. Upgrade `pip` and install the required Python packages:
+
+```powershell
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+7. Verify the installation:
+
+```powershell
+python -c "import streamlit, pandas, openpyxl; import streamlit_sortables; print('Installation OK')"
+streamlit --version
+```
+
+8. Create the private workbook folder used by the apps:
+
+```powershell
+New-Item -ItemType Directory -Force private_workbooks
+```
+
+Place private Excel workbooks in `private_workbooks\` only on your local machine. This folder is ignored by Git.
+
+### Updating an Existing Local Copy
+
+If you already cloned the repository, open a terminal in the local `Manual_Coding_App` folder and run:
+
+```bash
+git pull
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+On Windows, the same commands work in PowerShell once the virtual environment is activated.
+
+### Keeping Data Private
+
+Before adding or committing any file, check that private study material remains outside version control:
+
+```bash
+git status
+python3 scripts/privacy_check.py
+```
+
+On Windows, use:
+
+```powershell
+git status
+python scripts/privacy_check.py
+```
+
+The repository's `.gitignore` excludes `private_workbooks/`, Excel workbooks, data exports, outputs, logs, and common database formats. This is a guardrail, not a substitute for human review.
 
 ## Running the Apps
 
