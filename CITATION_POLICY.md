@@ -13,4 +13,4 @@ Required repository citation:
 
 Recommended repository citation metadata are provided in `CITATION.cff`.
 
-The apps may be adapted to other qualitative contexts, but the coding grammar, topic labels, phase-specific rules, and workbook schema should be reviewed and modified for the new research design.
+The apps may be adapted to other qualitative contexts, but the coding grammar, topic labels, study-specific rules, and input schema should be reviewed and modified for the new research design.

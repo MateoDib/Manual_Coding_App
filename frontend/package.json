@@ -1,0 +1,26 @@
+{
+  "name": "narrative-graph-editor",
+  "version": "3.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "dev": "vite --host 127.0.0.1",
+    "format": "prettier --write src vite.config.ts",
+    "format:check": "prettier --check src vite.config.ts"
+  },
+  "dependencies": {
+    "@xyflow/react": "12.12.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "streamlit-component-lib": "2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.27",
+    "@types/react-dom": "18.3.7",
+    "prettier": "3.9.10",
+    "typescript": "5.9.3",
+    "vite": "8.3.4"
+  }
+}
